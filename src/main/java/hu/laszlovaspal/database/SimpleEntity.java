@@ -47,6 +47,14 @@ public class SimpleEntity {
         this.data = data;
     }
 
+    @Override
+    public String toString() {
+        return "SimpleEntity{" +
+                "id=" + id +
+                ", data='" + data + '\'' +
+                '}';
+    }
+
     @Autowired
     public void setMessagingTemplate(SimpMessagingTemplate messagingTemplate) {
         SimpleEntity.messagingTemplate = messagingTemplate;
@@ -55,13 +63,15 @@ public class SimpleEntity {
     @PostPersist
     public void notifyClientsOfInsert() {
         LOGGER.info("Notifying clients of db insert");
-        messagingTemplate.convertAndSend("/topic/db", new DatabaseEventNotificationMessage("row inserted with data: " + data));
+        messagingTemplate.convertAndSend("/topic/db",
+                new DatabaseEventNotificationMessage("row inserted: " + this));
     }
 
     @PostUpdate
     public void notifyClientsOfUpdate() {
         LOGGER.info("Notifying clients of db update");
-        messagingTemplate.convertAndSend("/topic/db", new DatabaseEventNotificationMessage("row updated with data: " + data));
+        messagingTemplate.convertAndSend("/topic/db",
+                new DatabaseEventNotificationMessage("row updated: " + this));
     }
 
 }
