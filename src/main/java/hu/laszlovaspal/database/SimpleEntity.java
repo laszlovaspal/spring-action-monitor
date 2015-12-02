@@ -1,6 +1,6 @@
 package hu.laszlovaspal.database;
 
-import hu.laszlovaspal.websocket.Message;
+import hu.laszlovaspal.websocket.DatabaseEventNotificationMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,13 +55,13 @@ public class SimpleEntity {
     @PostPersist
     public void notifyClientsOfInsert() {
         LOGGER.info("Notifying clients of db insert");
-        messagingTemplate.convertAndSend("/topic/db", new Message("row inserted with data: " + data));
+        messagingTemplate.convertAndSend("/topic/db", new DatabaseEventNotificationMessage("row inserted with data: " + data));
     }
 
     @PostUpdate
     public void notifyClientsOfUpdate() {
         LOGGER.info("Notifying clients of db update");
-        messagingTemplate.convertAndSend("/topic/db", new Message("row updated with data: " + data));
+        messagingTemplate.convertAndSend("/topic/db", new DatabaseEventNotificationMessage("row updated with data: " + data));
     }
 
 }

@@ -1,10 +1,13 @@
 package hu.laszlovaspal.websocket;
 
-public class Message {
+public class DatabaseEventNotificationMessage {
 
     private String messageContent;
 
-    public Message(String messageContent) {
+    public DatabaseEventNotificationMessage() {
+    }
+
+    public DatabaseEventNotificationMessage(String messageContent) {
         this.messageContent = messageContent;
     }
 
