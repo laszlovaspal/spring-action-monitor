@@ -1,5 +1,7 @@
 package hu.laszlovaspal.websocket;
 
+import hu.laszlovaspal.database.SimpleEntity;
+import hu.laszlovaspal.database.SimpleEntityRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,17 +16,14 @@ public class MessageController {
     private static final Logger LOGGER = LoggerFactory.getLogger(MessageController.class);
 
     @Autowired
-    private SimpMessagingTemplate messagingTemplate;
+    private SimpleEntityRepository simpleEntityRepository;
 
     @MessageMapping("/notify")
-    @SendTo("/topic/db")
     public Message notifyClientOfDbChanges() {
 
         LOGGER.info("sending message through websocket");
 
-        for (int i = 0; i < 10; i++) {
-            messagingTemplate.convertAndSend("/topic/db", new Message("cucc " + i));
-        }
+        simpleEntityRepository.save(new SimpleEntity("cucc"));
 
         return new Message("asdf");
     }
